@@ -25,8 +25,16 @@ var roomSrv = flag.String("room-server", "https://appr.tc", "The origin of the r
 func main() {
 	flag.Parse()
 
-	log.Printf("Starting collider: tls = %t, port = %d, room-server=%s", *tls, *port, *roomSrv)
 
+
+	f, err := os.OpenFile("mylog.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	log.SetOutput(f)
+	log.Printf("testtest")
+	log.Printf("Starting collider: tls = %t, port = %d, room-server=%s", *tls, *port, *roomSrv)
 	c := collider.NewCollider(*roomSrv)
 	c.Run(*port, *tls)
 }
